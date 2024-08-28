@@ -29,7 +29,7 @@ GenAiFlowMasterは、AIを活用したワークフローの作成、実行、管
 
 1. リポジトリをクローンします：
    ```
-   git clone https://github.com/your-username/genaiflowmaster.git
+   git clone https://github.com/sinjorjob/GenAiFlowMaster.git
    cd genaiflowmaster
    ```
 
