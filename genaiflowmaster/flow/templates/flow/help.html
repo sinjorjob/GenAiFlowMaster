@@ -1,0 +1,695 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block title %}GenAiFlowMaster インタラクティブヘルプガイド{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #7c4dff;
+            --accent-color: #00bcd4;
+            --text-color: #333;
+            --bg-color: #f5f5f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .help-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .help-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .help-header h1 {
+            font-size: 4rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .help-header p {
+            font-size: 1.5rem;
+            color: #fff;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .help-nav {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .help-nav ul {
+            display: flex;
+            justify-content: space-around;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .help-nav li {
+            margin: 0 10px;
+        }
+
+        .help-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(18, 66, 210, 0.892);
+        }
+
+        .help-nav a:hover, .help-nav a.active {
+            background: var(--accent-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            overflow: hidden;
+            
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 280px;
+            height: 200px; /* 高さを増加 */
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px; /* パディングを増加 */
+            transition: all 0.3s ease;
+            overflow: hidden;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            margin: 0 20px; /* 左右の余白を追加 */
+        }
+
+
+        .swiper-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            z-index: 1;
+        }
+
+        .swiper-slide:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+        }
+
+        .swiper-slide svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+            transition: all 0.3s ease;
+        }
+
+        .swiper-slide:hover svg {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .swiper-slide h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .swiper-slide p {
+            font-size: 1rem;
+            color: var(--text-color);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: var(--accent-color);
+        }
+
+        .help-section {
+            background: #fff;
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .help-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .help-section h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .help-section h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .help-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .help-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .button-description {
+            background: linear-gradient(135deg, #f6f8fd, #f1f5ff);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .button-description:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .button-description h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .tip-box::before {
+            content: "\f0eb";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 100px;
+            color: rgba(255,255,255,0.2);
+            transform: rotate(15deg);
+        }
+
+        .tip-box h4 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-top: 0;
+        }
+
+        .tip-box p {
+            position: relative;
+            z-index: 1;
+        }
+
+        .execution-status {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .status-node {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .status-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .status-node.waiting {
+            background-color: #3498db;
+        }
+
+        .status-node.running {
+            background-color: #f39c12;
+            animation: pulse 1s infinite;
+        }
+
+        .status-node.completed {
+            background-color: #2ecc71;
+        }
+
+        .status-node.error {
+            background-color: #e74c3c;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .help-header h1 {
+                font-size: 3rem;
+            }
+
+            .help-nav {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .swiper-slide {
+                width: 250px;
+                height: 300px;
+            }
+
+            .help-section {
+                padding: 30px;
+            }
+
+            .execution-status {
+                flex-wrap: wrap;
+            }
+
+            .status-node {
+                margin-bottom: 20px;
+                width: 80px;
+                height: 80px;
+                font-size: 0.9rem;
+            }
+        }
+        .node-edit-container {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            width: 500px;
+            margin: 0;
+        }
+        .node-edit-container h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .node-edit-explanation {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .setting-item {
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .setting-label {
+            font-weight: bold;
+            color: #fff;
+            background-color: #766ce8;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: block;
+            margin-bottom: 5px;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            position: relative;
+        }
+        .setting-item p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+        .tooltip-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+        }
+    
+    </style>
+{% endblock %}
+
+{% block header_title %}GenAiFlowMaster ガイド{% endblock %}
+
+{% block content %}
+    <div class="help-container">
+        <header class="help-header">
+            <h1>GenAiFlowMaster ガイド</h1>
+            <p>AIフローの作成と管理を簡単に</p>
+        </header>
+
+        <nav class="help-nav">
+            <ul>
+                <li><a href="#overview">概要</a></li>
+                <li><a href="#getting-started">はじめに</a></li>
+                <li><a href="#flow-creation">フロー作成</a></li>
+                <li><a href="#execution">実行と結果</a></li>
+            </ul>
+        </nav>
+
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="#4CAF50" stroke-width="2"/>
+                        <path d="M7 12h10M12 7v10" stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="7" cy="7" r="1.5" fill="#4CAF50"/>
+                        <circle cx="17" cy="7" r="1.5" fill="#4CAF50"/>
+                        <circle cx="7" cy="17" r="1.5" fill="#4CAF50"/>
+                        <circle cx="17" cy="17" r="1.5" fill="#4CAF50"/>
+                    </svg>
+                    <h3>フロー作成</h3>
+                    <p>フローをマウス操作で定義</p>
+                </div>
+                <div class="swiper-slide">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="#2196F3" stroke-width="2"/>
+                        <path d="M9 7l7 5-7 5V7z" fill="#2196F3"/>
+                        <path d="M5 5l14 14M19 5l-14 14" stroke="#2196F3" stroke-width="1" stroke-linecap="round"/>
+                    </svg>
+                    <h3>フロー実行</h3>
+                    <p>ワンクリックで簡単にフローを実行</p>
+                </div>
+                <div class="swiper-slide">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="#E91E63" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="6" stroke="#E91E63" stroke-width="2"/>
+                        <path d="M12 8v4l3 3" stroke="#E91E63" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M7 7l2 2M17 7l-2 2" stroke="#E91E63" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h3>リアルタイム監視</h3>
+                    <p>実行状態をリアルタイムで確認</p>
+                </div>
+                <div class="swiper-slide">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="#FF9800" stroke-width="2"/>
+                        <line x1="7" y1="20" x2="7" y2="10" stroke="#FF9800" stroke-width="2"/>
+                        <line x1="12" y1="20" x2="12" y2="4" stroke="#FF9800" stroke-width="2"/>
+                        <line x1="17" y1="20" x2="17" y2="14" stroke="#FF9800" stroke-width="2"/>
+                    </svg>
+                    <h3>実行履歴</h3>
+                    <p>詳細な実行履歴を確認</p>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <section id="overview" class="help-section">
+            <h2>GenAiFlowMasterの概要</h2>
+            <p>GenAiFlowMasterは、AIを活用したワークフローの作成、実行、管理を簡単にする革新的なプラットフォームです。直感的なインターフェースと強力な機能を組み合わせることで、AIの力を最大限に引き出し、ビジネスプロセスを効率化します。</p>
+            <div class="tip-box">
+                <h4>Why GenAiFlowMaster?</h4>
+                <p>従来のAIツールとは異なり、GenAiFlowMasterはフローベースのアプローチを採用。これにより、複雑なAIタスクを視覚的に理解し、管理することができます。結果、AIプロジェクトの開発時間を大幅に短縮し、より高品質な成果を得ることができます。</p>
+            </div>
+        </section>
+
+        <section id="flow-creation" class="help-section">
+            <h2>フローの作成</h2>
+            <p>GenAiFlowMasterのフロー作成機能を紹介します。</p>
+            
+            <h3>1. 新規フローの作成</h3>
+            <p>ダッシュボードの「新規フロー作成」ボタンをクリックし、フロー名を入力します。</p>
+            <video width="100%" controls autoplay loop muted>
+                <source src="{% static 'videos/create-flow.mp4' %}" type="video/mp4">
+                お使いのブラウザは動画タグをサポートしていません。
+            </video>
+            <h3>2. ノードの追加</h3>
+            <p>・フローエディタ画面で「ノードを追加」ボタンをクリックし、必要なノードを追加します。<br>
+                ・ノードとノード間をマウス操作で簡単に連結できます。<br>
+                ・ノードの先行にできるノードは１つのみです。</p>
+
+
+                
+            <video width="100%" controls autoplay loop muted>
+                <source src="{% static 'videos/flow-edit.mp4' %}" type="video/mp4">
+                お使いのブラウザは動画タグをサポートしていません。
+            </video>
+            
+            <h3>3. ノードの設定</h3>
+            <p>各ノードをクリックして設定画面を開き、以下の項目を設定します：</p>
+            <div class="node-edit-container">
+                <h3>ノード編集の設定項目</h3>
+                <div class="node-edit-explanation">
+                    <div class="setting-item">
+                        <div class="setting-label">ノード名:</div>
+                        <p>ノードを識別するための名前を入力します。</p>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">システムプロンプト:</div>
+                        <p>AIに与える役割や前提条件を設定します。</p>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">指示内容: <i class="fas fa-question-circle tooltip-icon"></i></div>
+                        <p>AIに実行してほしいタスクの詳細を記述します。</p>
+                        <p><b>&#123;&#123;input&#125;&#125;</b>と記載することで初期入力情報、または先行ノードの出力結果を指示内容に組み込むことが可能です。</p>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">Sequence番号:</div>
+                        <p>ノードの実行順序を指定します。</p>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">AIモデル:</div>
+                        <p>使用するAIモデルを選択します。</p>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">Temperature: <i class="fas fa-question-circle tooltip-icon"></i></div>
+                        <p>AIの創造性を0から1の範囲で調整します。</p>
+                    </div>
+                </div>
+            </div>
+            <video width="100%" controls autoplay loop muted>
+                <source src="{% static 'videos/node-edit.mp4' %}" type="video/mp4">
+                お使いのブラウザは動画タグをサポートしていません。
+            </video>
+
+            <div class="tip-box">
+                <h4>Tip: 複雑なフローの設計</h4>
+                <p>複雑なタスクは、複数の小さなステップに分割することで管理しやすくなります。各ノードが1つの明確なタスクを担当するようにデザインしましょう。これにより、フローの理解、デバッグ、最適化が容易になります。</p>
+            </div>
+        </section>
+
+
+        <section id="getting-started" class="help-section">
+            <h2>AIモデルの設定</h2>
+         
+            <h3>3. AIモデルの設定</h3>
+            <p>「<b>モデル設定</b>」メニューから「<b>モデル設定</b>」画面を表示し、使用するAIモデル（OpenAI、AzureOpenAI、Claude）のAPIキー等を設定します。</p>
+            <video width="100%" controls autoplay loop muted>
+                <source src="{% static 'videos/model-settings.mp4' %}" type="video/mp4">
+                お使いのブラウザは動画タグをサポートしていません。
+            </video> 
+        </section>
+        <section id="execution" class="help-section">
+            <h2>フローの実行と結果確認</h2>
+            
+            <h3>1. フローの実行</h3>
+            <p>フローエディタ画面の「フローを実行」ボタンをクリックします。<br>
+               フローの初期情報を入力する画面が表示されるので、情報を入力したら「フローを実行」ボタンを押します。</p>
+            
+            <h3>2. リアルタイム実行状況の確認</h3>
+            <p>フロー実行中は、各ノードの状態がリアルタイムで更新されます。</p>
+            <div class="execution-status">
+                <div class="status-node waiting">待機中</div>
+                <div class="status-node running">実行中</div>
+                <div class="status-node completed">完了</div>
+                <div class="status-node error">失敗</div>
+            </div>
+            
+            <h3>3. 結果の確認</h3>
+            <p>実行完了後、各ノードの出力結果が表示されます。最終ノードの出力が全体の結果となります。</p>
+            <video width="100%" controls autoplay loop muted>
+                <source src="{% static 'videos/flow_run.mp4' %}" type="video/mp4">
+                お使いのブラウザは動画タグをサポートしていません。
+            </video>
+        </section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+    <script>
+        // Swiper initialization
+        new Swiper('.swiper-container', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            coverflowEffect: {
+                rotate: 30,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            loop: true,
+            speed: 1000,
+        });
+
+        // スクロールアニメーション
+        const sections = document.querySelectorAll('.help-section');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // ナビゲーションのアクティブ状態管理
+        const navLinks = document.querySelectorAll('.help-nav a');
+        const handleScroll = () => {
+            let scrollPosition = window.scrollY;
+
+            sections.forEach(section => {
+                if (section.offsetTop <= scrollPosition + 150) {
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href').slice(1) === section.id) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        // 初期ロード時にもナビゲーションのアクティブ状態を設定
+        document.addEventListener('DOMContentLoaded', handleScroll);
+
+        // スムーズスクロール
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').slice(1);
+                const targetElement = document.getElementById(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+{% endblock %}

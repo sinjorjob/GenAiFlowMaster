@@ -1,0 +1,70 @@
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.header {
+    background: linear-gradient(45deg, #985ed1 0%, #4438e5 100%);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(169, 211, 229, 0.906);
+    margin: -20px -20px 20px -20px;
+}
+
+.header h1 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #00FFFF;
+}
+
+.flow-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.flow-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.flow-item button {
+    background: linear-gradient(45deg, #00FFFF, #FF00FF);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.flow-item button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 255, 255, 0.2);
+}

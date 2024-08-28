@@ -1,0 +1,34 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}フロー実行結果 - {{ flow.name }}{% endblock %}
+
+{% block header_title %}フロー実行結果 - {{ flow.name }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
+<link rel="stylesheet" href="{% static 'css/flow_result.css' %}">
+{% endblock %}
+
+{% block content %}
+<svg width="0" height="0">
+    <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+        refX="0" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#4facfe" />
+        </marker>
+    </defs>
+</svg>
+<div id="drawflow"></div>
+<div id="node-details"></div>
+<a href="{% url 'flow_run_history' flow.uuid %}" class="back-button">実行履歴に戻る</a>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+<script>
+    const flowData = {{ flow_data|safe }};
+    const nodeRunLogs = {{ node_run_logs|safe }};
+    const flowRunId = {{ flow_run.id }};
+</script>
+<script src="{% static 'js/flow_result.js' %}"></script>
+{% endblock %}

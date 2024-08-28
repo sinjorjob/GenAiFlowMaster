@@ -1,0 +1,28 @@
+
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}チャット入力 - {{ flow.name }}{% endblock %}
+
+{% block header_title %}チャット入力 - {{ flow.name }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/chat_input.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <h2>インプット情報の入力</h2>
+    <textarea id="chatInput" class="chat-input" placeholder="フローの最初のインプットを入力してください..."></textarea>
+    <div class="button-container">
+        <button id="backButton" class="button back-button">戻る</button>
+        <button id="executeButton" class="button execute-button">フローを実行</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var flowId = {{ flow.id }};
+</script>
+<script src="{% static 'js/chat_input.js' %}"></script>
+{% endblock %}

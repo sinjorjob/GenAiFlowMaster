@@ -1,0 +1,117 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}GenAiFlowMaster - {{ flow.name }}{% endblock %}
+
+{% block header_title %}GenAiFlowMaster - {{ flow.name }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
+<link rel="stylesheet" href="{% static 'css/flow_editor.css' %}">
+{% endblock %}
+
+{% block content %}
+<svg width="0" height="0">
+    <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#4facfe" />
+        </marker>
+    </defs>
+</svg>
+
+<div id="controls">
+    <div class="tooltip">
+        <button onclick="addNode()">
+            <i class="material-icons">add</i>
+            ノードを追加
+        </button>
+        <span class="tooltiptext">新しいノードをフローに追加します。<br>各ノードはマウス操作で連結できます。<br>1つのノードのみ先行条件にできます。</span>
+    </div>
+    <div class="tooltip">
+        <button onclick="deleteSelectedNode()">
+            <i class="material-icons">delete</i>
+            選択したノードを削除
+        </button>
+        <span class="tooltiptext">現在選択されているノードをフローから削除します。</span>
+    </div>
+    <div class="tooltip">
+        <button onclick="saveFlow()">
+            <i class="material-icons">save</i>
+            フローを保存
+        </button>
+        <span class="tooltiptext">現在のフロー設定を保存します。</span>
+    </div>
+    <div class="tooltip">
+        <button onclick="executeFlow()">
+            <i class="material-icons">play_arrow</i>
+            フローを実行
+        </button>
+        <span class="tooltiptext">設定されたフローを実行します。</span>
+    </div>
+    <div class="tooltip">
+        <button onclick="showRunHistory()">
+            <i class="material-icons">history</i>
+            実行履歴
+        </button>
+        <span class="tooltiptext">過去のフロー実行履歴を表示します。</span>
+    </div>
+</div>
+<div id="drawflow"></div>
+
+<div id="nodeEditModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>ノード編集</h2>
+        <form id="nodeEditForm">
+            <input type="hidden" id="nodeId">
+            <div>
+                <label for="nodeName">ノード名:</label>
+                <input type="text" id="nodeName" required>
+            </div>
+            <div>
+                <label for="systemPrompt">システムプロンプト:</label>
+                <textarea id="systemPrompt"></textarea>
+            </div>
+            <div>
+                <label for="instruction">
+                    指示内容:
+                    <span class="help-icon">?
+                        <span class="help-tooltip">&#123;&#123;input&#125;&#125;と記載することで入力情報、または先行ノードのアウトプット内容をプロンプトに組み込むことができます</span>
+                    </span>
+                </label>
+                <div id="instruction-wrapper">
+                    <textarea id="instruction"></textarea>
+                    <div id="instruction-overlay"></div>
+                </div>
+            </div>
+            <div>
+                <label for="sequence">Sequence番号:</label>
+                <input type="number" id="sequence" min="0">
+            </div>
+            <div>
+                <label for="aiModel">AIモデル:</label>
+                <select id="aiModel"></select>
+            </div>
+            <div>
+                <label for="temperature">
+                    Temperature:
+                    <span class="help-icon">?
+                        <span class="help-tooltip">"Temperature（温度）は、AIの出力の多様性を制御します。高い値（1に近い）はより創造的で予測不可能な出力を生成し、低い値（0に近い）はより一貫性のある、決定論的な出力を生成します。</span>
+                    </span>
+                </label>
+                <input type="range" id="temperatureSlider" min="0" max="1" step="0.1" value="0.5">
+                <input type="number" id="temperatureValue" min="0" max="1" step="0.1" value="0.5">
+            </div>
+            <button type="submit">閉じる</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const flowId = "{{ flow_uuid }}";
+</script>
+<script src="{% static 'js/flow_editor.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,316 @@
+body {
+    background-color: #f0f4f8;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+#drawflow {
+    width: 100%;
+    height: 400px;
+    background-color: #1a1a2e;
+    background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#drawflow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(91, 194, 255, 0.02) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(249, 145, 255, 0.02) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.sequence-number {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.drawflow-node {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(200, 200, 200, 0.4),
+        0 0 30px rgba(180, 180, 180, 0.3),
+        0 0 40px rgba(160, 160, 160, 0.2),
+        0 0 70px rgba(140, 140, 140, 0.1);
+    border-radius: 8px;
+    min-width: 150px;
+    min-height: 40px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.drawflow-node .title-box {
+    padding: 10px;
+    font-weight: 500;
+    padding-right: 30px;
+    color: #333;
+}
+
+#node-details {
+    margin-top: 20px;
+}
+
+.node-detail {
+    margin-bottom: 15px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+}
+
+.node-detail-header {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    padding: 15px 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.node-detail-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.node-detail-content {
+    background: #ffffff;
+    padding: 25px;
+    display: none;
+}
+
+.node-detail.expanded .node-detail-content {
+    display: block;
+}
+
+.expand-icon {
+    font-size: 1.5em;
+    transition: transform 0.3s ease;
+}
+
+.node-detail.expanded .expand-icon {
+    transform: rotate(180deg);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.85em;
+    margin-left: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 2px 5px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+}
+
+.status-badge::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%);
+    transform: scale(0);
+    transition: transform 0.3s ease-out;
+}
+
+.status-badge:hover::before {
+    transform: scale(1);
+}
+
+.status-PENDING { 
+    background: linear-gradient(to bottom, #FFC107 0%, #FFA000 100%);
+}
+
+.status-RUNNING { 
+    background: linear-gradient(to bottom, #2196F3 0%, #1976D2 100%);
+}
+
+.status-COMPLETED { 
+    background: linear-gradient(to bottom, #4CAF50 0%, #45a049 100%);
+}
+
+.status-FAILED { 
+    background: linear-gradient(to bottom, #F44336 0%, #D32F2F 100%);
+}
+
+.data-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    border-left: 5px solid #3498db;
+    backdrop-filter: blur(5px);
+}
+
+.data-section h4 {
+    margin-top: 0;
+    color: #2980b9;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+.data-item {
+    margin-bottom: 20px;
+}
+
+.data-item label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #34495e;
+}
+
+.data-item .value {
+    padding: 12px;
+    background-color: rgba(244, 246, 249, 0.8);
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    word-break: break-all;
+    white-space: pre-wrap;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #2c3e50;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.timestamp {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    margin-top: 15px;
+    text-align: right;
+}
+
+.sequence-badge {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.node-name {
+    margin-right: 10px;
+}
+
+.drawflow-node .status-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 0 0 rgb(255, 255, 255);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(180, 0, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(180, 0, 0, 0);
+    }
+}
+
+.drawflow .drawflow-node.running {
+    animation: pulse-border 1.5s infinite;
+    background-color: #FFFF00 !important;
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+}
+
+.drawflow .drawflow-node.running .title-box {
+    color: #000000 !important;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.drawflow .connection .main-path {
+    stroke-width: 3px;
+    stroke: #4facfe;
+    stroke-dasharray: 10, 10;
+    stroke-dashoffset: 20;
+    animation: flow 0.5s linear infinite;
+}
+
+.drawflow .connection.selected .main-path {
+    stroke: #43e97b;
+    stroke-width: 4px;
+}
+
+@keyframes flow {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.drawflow .connection {
+    animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.data-item .value.error-message {
+    background-color: #ff3333 !important;
+    color: white !important;
+}
+.back-button {
+    display: inline-block;
+    background: #3f51b5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background: #303f9f;
+}

@@ -1,0 +1,48 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}実行履歴 - {{ flow.name }}{% endblock %}
+
+{% block header_title %}実行履歴 - {{ flow.name }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/flow_run_history.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <h2>実行履歴</h2>
+    <ul class="history-list">
+        {% for run in flow_runs %}
+        <li class="history-item" id="run-{{ run.id }}">
+            <div class="history-item-content">
+                <a href="{% url 'flow_result' run.flow.uuid run.id %}">
+                    <span class="date">{{ run.started_at|date:"Y-m-d H:i:s" }}</span>
+                </a>
+                <div>
+                    <span class="status status-{{ run.status }}">
+                        {% if run.status == 'COMPLETED' %}
+                            正常終了
+                        {% elif run.status == 'FAILED' %}
+                            異常終了
+                        {% else %}
+                            {{ run.status }}
+                        {% endif %}
+                    </span>
+                    <button class="button delete-button" data-run-id="{{ run.id }}">削除</button>
+                </div>
+            </div>
+        </li>
+        {% empty %}
+        <li>実行履歴がありません。</li>
+        {% endfor %}
+    </ul>
+</div>
+<a href="{% url 'flow_editor' flow.uuid %}" class="back-button">フローエディタに戻る</a>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var csrfToken = '{{ csrf_token }}';
+</script>
+<script src="{% static 'js/flow_run_history.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,472 @@
+#drawflow {
+    width: 100%;
+    height: 400px;
+    background-color: #1a1a2e;
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#drawflow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(91, 194, 255, 0.02) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(249, 145, 255, 0.02) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+#controls {
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#controls button {
+    background: linear-gradient(to bottom, #4CAF50 0%, #45a049 100%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    margin-right: 10px;
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+#controls button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 80%);
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+#controls button:hover {
+    background: linear-gradient(to bottom, #45a049 0%, #4CAF50 100%);
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+#controls button:hover::before {
+    opacity: 1;
+    transform: rotate(45deg) scale(1.5);
+}
+
+#controls button:active {
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.1),
+        0 1px 1px rgba(0, 0, 0, 0.08),
+        inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#controls button .material-icons {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* 各ボタンの個別スタイル */
+#controls .tooltip:nth-child(1) button { background: linear-gradient(to bottom, #2196F3 0%, #1976D2 100%); }
+#controls .tooltip:nth-child(1) button:hover { background: linear-gradient(to bottom, #1976D2 0%, #2196F3 100%); }
+#controls .tooltip:nth-child(2) button { background: linear-gradient(to bottom, #F44336 0%, #D32F2F 100%); }
+#controls .tooltip:nth-child(2) button:hover { background: linear-gradient(to bottom, #D32F2F 0%, #F44336 100%); }
+#controls .tooltip:nth-child(3) button { background: linear-gradient(to bottom, #FFC107 0%, #FFA000 100%); }
+#controls .tooltip:nth-child(3) button:hover { background: linear-gradient(to bottom, #FFA000 0%, #FFC107 100%); }
+#controls .tooltip:nth-child(4) button { background: linear-gradient(to bottom, #9C27B0 0%, #7B1FA2 100%); }
+#controls .tooltip:nth-child(4) button:hover { background: linear-gradient(to bottom, #7B1FA2 0%, #9C27B0 100%); }
+#controls .tooltip:nth-child(5) button { background: linear-gradient(to bottom, #4CAF50 0%, #45a049 100%); }
+#controls .tooltip:nth-child(5) button:hover { background: linear-gradient(to bottom, #45a049 0%, #4CAF50 100%); }
+
+.sequence-number {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.drawflow-node {
+    background-color: rgb(251, 251, 251) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(255, 255, 255, 0.1),
+        0 0 30px rgba(255, 255, 255, 0.05) 0 0 40px rgba(160, 160, 160, 0.2),
+        0 0 70px rgba(140, 140, 140, 0.1);
+    border-radius: 8px;
+    min-width: 150px;
+    min-height: 40px;
+    position: relative;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.drawflow-node.selected {
+    animation: glow 1.5s ease-in-out infinite alternate;
+    transform: scale(1.05);
+    box-shadow:
+        0 0 15px rgba(100, 181, 246, 0.8),
+        0 0 30px rgba(100, 181, 246, 0.6),
+        0 0 45px rgba(100, 181, 246, 0.4);
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px rgba(100, 181, 246, 0.6), 0 0 10px rgba(100, 181, 246, 0.6), 0 0 15px rgba(100, 181, 246, 0.6), 0 0 20px rgba(100, 181, 246, 0.6);
+    }
+    to {
+        box-shadow: 0 0 10px rgba(100, 181, 246, 0.9), 0 0 20px rgba(100, 181, 246, 0.9), 0 0 30px rgba(100, 181, 246, 0.9), 0 0 40px rgba(100, 181, 246, 0.9);
+    }
+}
+
+.drawflow-node .title-box {
+    padding: 10px;
+    font-weight: 500;
+    padding-right: 30px;
+    color: #333;
+}
+
+.edit-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    color: #007bff;
+    padding: 2px;
+    line-height: 1;
+}
+
+.edit-button:hover {
+    color: #ffffff;
+    background-color: #007bff;
+}
+
+.edit-button .material-icons {
+    font-size: 16px;
+}
+
+#nodeEditForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 15px;
+    align-items: stretch;
+}
+
+#nodeEditForm div {
+    margin-bottom: 0;
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#nodeEditForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: white;
+    background: linear-gradient(135deg, 
+        #9254de 0%, 
+        #7c3aed 50%, 
+        #6025c0 100%);
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 
+        0 2px 4px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#nodeEditForm label::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom right,
+        rgba(255,255,255,0.1) 0%,
+        rgba(255,255,255,0.05) 50%,
+        rgba(255,255,255,0) 50.1%,
+        rgba(0,0,0,0.05) 100%);
+    pointer-events: none;
+    border-radius: 6px;
+}
+
+#nodeEditForm label:hover {
+    box-shadow: 
+        0 4px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+}
+
+#nodeEditForm textarea#instruction,
+#nodeEditForm textarea#systemPrompt {
+    height: 200px;
+    min-height: 200px;
+    resize: vertical;
+}
+
+#nodeEditForm input[type="text"],
+#nodeEditForm input[type="number"],
+#nodeEditForm textarea,
+#nodeEditForm select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+#nodeEditForm select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333333' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+#nodeEditForm input[type="text"]:focus,
+#nodeEditForm input[type="number"]:focus,
+#nodeEditForm textarea:focus,
+#nodeEditForm select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+#nodeEditForm button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    align-self: flex-start;
+}
+
+#nodeEditForm button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#instruction-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#instruction {
+    width: 100%;
+    min-height: 150px;
+    resize: vertical;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    overflow: auto;
+}
+
+#instruction-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: transparent;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.pill-batch {
+    background-color: #000000;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    display: inline-block;
+    margin: 2px;
+    pointer-events: none;
+    min-width: 100px;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.drawflow .connection .main-path {
+    stroke-width: 3px;
+    stroke: #4facfe;
+    stroke-dasharray: 10, 10;
+    stroke-dashoffset: 20;
+    animation: flow 0.5s linear infinite;
+}
+
+.drawflow .connection.selected .main-path {
+    stroke: #43e97b;
+    stroke-width: 4px;
+}
+
+@keyframes flow {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.drawflow .connection {
+    animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.help-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 14px;
+    cursor: help;
+    margin-left: 5px;
+    position: relative;
+}
+
+.help-tooltip {
+    visibility: hidden;
+    width: 500px;
+    background-color: #555;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -150px;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.help-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.help-icon:hover .help-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 280px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}

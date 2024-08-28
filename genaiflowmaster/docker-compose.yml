@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/code
+      - sqlite_data:/code/db_data
+    ports:
+      - "8000:8000"
+
+volumes:
+  sqlite_data:

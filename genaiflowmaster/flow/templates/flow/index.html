@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowMaster - 究極のフロー作成アプリ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <div class="content">
+            <h1>GenAiFlowMaster</h1>
+            <p>AIリクエストを洗練されたフローへ。直感的な操作で複雑なAIタスクを設計し、効率的に実行。あなたのアイデアを連鎖的なAI処理で具現化します。次世代のAIワークフロー、ここに誕生。</p>
+            <div class="btn-container">
+                <button id="createFlowBtn" class="btn">フローを作成</button>
+                <button id="listFlowsBtn" class="btn">作成済みフロー</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="flowModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>フロー名を入力してください。</h2>
+            <input type="text" id="flowName" placeholder="フロー名を入力">
+            <button id="submitFlow">フローを作成する</button>
+        </div>
+    </div>
+
+    <div id="flowListModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>フロー一覧</h2>
+            <ul id="flowList" class="flow-list">
+                <!-- フローリストがここに動的に追加されます -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="{% static 'js/index.js' %}"></script>
+</body>
+</html>
