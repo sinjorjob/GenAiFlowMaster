@@ -5,10 +5,18 @@ GenAiFlowMasterは、AIを活用したワークフローの作成、実行、管
 ## 特徴
 
 - **ビジュアルフロー作成**: ユーザーフレンドリーなドラッグ＆ドロップインターフェースを使用して、複雑なAIワークフローを設計できます。
+![フローの定義](https://github.com/sinjorjob/GenAiFlowMaster/blob/main/gif/flow-editor.gif)
+
 - **マルチモデルサポート**: OpenAI、AzureOpenAI、Claudeなど、さまざまなAIモデルと統合できます。
 - **リアルタイム実行監視**: ワークフローの進行状況をリアルタイムで追跡できます。
+
+![フローの実行](https://github.com/sinjorjob/GenAiFlowMaster/blob/main/gif/flow-run.gif
+)
+
+
 - **カスタマイズ可能なノード**: 各ノードに特定の指示、システムプロンプト、AIモデル設定を構成できます。
 - **実行履歴**: 過去のワークフロー実行の詳細なログを確認できます。
+
 
 ## はじめに
 
