@@ -475,6 +475,76 @@
             transform: translateY(-50%);
             color: white;
         }
+        .github-repo-card {
+  background: linear-gradient(135deg, #2b3137 0%, #1a1d21 100%);
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  margin: 30px auto;
+  max-width: 500px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.github-repo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.repo-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card-content {
+  display: flex;
+  padding: 20px;
+  align-items: center;
+}
+
+.repo-icon {
+  font-size: 3rem;
+  color: #fff;
+  margin-right: 20px;
+}
+
+.repo-info {
+  flex-grow: 1;
+}
+
+.repo-name {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin: 0 0 10px;
+}
+
+.repo-description {
+  color: #8b949e;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.card-footer {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px 20px;
+  text-align: right;
+}
+
+.view-repo {
+  color: #58a6ff;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.view-repo i {
+  margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+  .github-repo-card {
+    max-width: 90%;
+  }
+}
     </style>
 </head>
 <body>
@@ -547,6 +617,22 @@
                 <h4>Why GenAiFlowMaster?</h4>
                 <p>従来のAIツールとは異なり、GenAiFlowMasterはフローベースのアプローチを採用。これにより、複雑なAIタスクを視覚的に理解し、管理することができます。結果、AIプロジェクトの開発時間を大幅に短縮し、より高品質な成果を得ることができます。</p>
             </div>
+            <div class="github-repo-card">
+                <a href="https://github.com/sinjorjob/GenAiFlowMaster" target="_blank" rel="noopener noreferrer" class="repo-link">
+                  <div class="card-content">
+                    <div class="repo-icon">
+                      <i class="fab fa-github"></i>
+                    </div>
+                    <div class="repo-info">
+                      <h3 class="repo-name">GenAiFlowMaster</h3>
+                      <p class="repo-description">AIを活用したワークフローの作成、実行、管理プラットフォーム</p>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <span class="view-repo">リポジトリを表示 <i class="fas fa-external-link-alt"></i></span>
+                  </div>
+                </a>
+              </div>
         </section>
 
         <section id="flow-creation" class="help-section">
